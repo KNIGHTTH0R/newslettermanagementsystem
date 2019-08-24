@@ -1,5 +1,7 @@
 <?php
 
+use GuzzleHttp\Client;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,5 +14,13 @@
 */
 
 Route::get('/', function () {
+
+    //dd(json_encode((new \App\Mail\EmailAddress("x@c.com", "jjj"))->jsonSerialize()));
+
+    $mail = \App\Mail::find(1);
+    $driver = new \App\MailDrivers\SendGrid\Driver(env("SENDGRID_API_KEY"));
+    //dd($mail->toEmailAddresses->all());
+    dd($driver->send($mail));
+
     return view('welcome');
 });
