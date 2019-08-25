@@ -74,7 +74,7 @@ class APIController extends Controller
             return response()->json($validator->errors(), 400);
         }
 
-        dd($data['to']);
+        //dd($data['to']);
 
         DB::transaction(function() use ($data)
         {
