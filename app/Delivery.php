@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
  * App\Delivery
  *
  * @property int $id
- * @property int $if_terminated
  * @property string|null $message_id
  * @property int $mail_id
  * @property int $to_email_id

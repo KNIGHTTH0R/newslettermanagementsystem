@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Delivery;
+use App\DeliveryStatus;
 use App\Driver;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
@@ -41,8 +42,18 @@ class ProcessSendMail implements ShouldQueue
             $response = $driver->send($this->delivery);
             Log::info(json_encode($response));
 
-            if ($response['status'] == 'Sent')
+            $delivery_status = new DeliveryStatus();
+            $delivery_status->status = $response['status'];
+            $delivery_status->details = json_encode($response);
+            $delivery_status->driver_id = $d->id;
+            $delivery_status->delivery_id = $this->delivery->id;
+            $delivery_status->save();
+
+            if ($response['status'] == 'Sent') {
+                $this->delivery->message_id = $response['message_id'];
+                $this->delivery->save();
                 break;
+            }
 
         }
 

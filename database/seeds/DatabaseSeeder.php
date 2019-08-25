@@ -101,14 +101,12 @@ class DeliveryTableSeeder extends Seeder
                 'mail_id' => '1',
                 'to_email_id' => '2',
                 'assigned_driver_id' => '1',
-                'if_terminated' => "0",
             ],
             [
                 'id' => '2',
                 'mail_id' => '1',
                 'to_email_id' => '3',
                 'assigned_driver_id' => '1',
-                'if_terminated' => "0",
             ],
         ]);
     }

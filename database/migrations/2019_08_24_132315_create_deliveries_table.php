@@ -15,7 +15,6 @@ class CreateDeliveriesTable extends Migration
     {
         Schema::create('deliveries', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->boolean('if_terminated')->default(0);
             $table->string('message_id', 50)->nullable()->unique();
 
             $table->bigInteger('mail_id')->unsigned();
