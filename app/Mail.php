@@ -34,6 +34,13 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Mail extends Model
 {
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['subject','html_content','text_content','from_email_id','reply_to_email_id'];
+
     public function fromEmailAddress()
     {
         return $this->belongsTo(EmailAddress::class, 'from_email_id');

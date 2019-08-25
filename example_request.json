@@ -1,0 +1,26 @@
+{
+    "from": {
+        "email": "barcimen@hotmail.com",
+        "name": "Barış Çimen"
+    },
+    "replyTo": {
+        "email": "barcimen@live.com",
+        "name": "Bar Cim"
+    },
+    "to": [
+        {
+            "email": "barcimen@gmail.com",
+            "name": "passenger 1"
+        }
+    ],
+    "subject": "Your email flight plan!",
+    "text": "Dear passenger 1, welcome to Mailjet! May the delivery force be with you!",
+    "html": "<h3>Dear passenger 1, welcome to <a href=\"https://www.mailjet.com/\">Mailjet</a>!</h3><br />May the delivery force be with you!",
+    "attachments": [
+        {
+            "contentType": "text/plain",
+            "filename": "test.txt",
+            "base64Content": "VGhpcyBpcyB5b3VyIGF0dGFjaGVkIGZpbGUhISEK"
+        }
+    ]
+}

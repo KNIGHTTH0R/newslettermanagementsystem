@@ -29,6 +29,13 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Attachment extends Model
 {
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['filename', 'type', 'content', 'mail_id'];
+
     public function mail()
     {
         return $this->belongsTo(Mail::class);

@@ -23,3 +23,15 @@ Route::prefix('webhook')->group(function () {
         \App\MailDrivers\Mailjet\Webhook::handle($payload);
     });
 });
+
+// List deliveries
+Route::get('deliveries', 'APIController@getDeliveries');
+
+// List single delivery
+Route::get('delivery/{id}', 'APIController@getDelivery');
+
+// List statuses of an delivery
+Route::get('delivery/{id}/status', 'APIController@getDeliveryStatuses');
+
+// Create new mail
+Route::post('mail', 'APIController@createMail');

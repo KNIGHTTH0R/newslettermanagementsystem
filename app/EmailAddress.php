@@ -31,6 +31,13 @@ use Illuminate\Database\Eloquent\Model;
  */
 class EmailAddress extends Model
 {
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['name', 'email'];
+
     public function deliveries()
     {
         return $this->hasMany(Delivery::class, 'to_email_id');

@@ -17,7 +17,9 @@ Route::get('/', function () {
 
 
     $delivery = \App\Delivery::find(1);
-    \App\Jobs\ProcessSendMail::dispatch($delivery);
+    //\App\Jobs\ProcessSendMail::dispatch($delivery);
+    return \App\Http\Resources\DeliveryStatusResource::collection(\App\DeliveryStatus::paginate(15));
+    return \App\Http\Resources\DeliveryResource::collection(\App\Delivery::paginate(15));
     dd(0);
 
 

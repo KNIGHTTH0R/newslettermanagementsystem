@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Jobs\ProcessSendMail;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -32,6 +33,23 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Delivery extends Model
 {
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['mail_id', 'to_email_id'];
+
+    public static function boot()
+    {
+        parent::boot();
+
+        //once created/inserted successfully, send the delivery to API services
+        static::created(function ($model) {
+            ProcessSendMail::dispatch($model);
+        });
+    }
+
     public function mail()
     {
         return $this->belongsTo(Mail::class, 'mail_id');
@@ -39,11 +57,16 @@ class Delivery extends Model
 
     public function statuses()
     {
-        return $this->hasMany(DeliveryStatus::class);
+        return $this->hasMany(DeliveryStatus::class, 'delivery_id');
     }
 
     public function to_email()
     {
         return $this->belongsTo(EmailAddress::class, 'to_email_id');
+    }
+
+    public function getLatestStatus()
+    {
+        return optional($this->statuses()->latest()->first())->status;
     }
 }
