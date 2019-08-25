@@ -37,6 +37,10 @@ class ProcessSendMail implements ShouldQueue
     {
         foreach (Driver::orderBy('priority', 'ASC')->get() as $d) {
 
+            // If we already tried to send the mail using this driver, then we skip it.
+            if ($this->delivery->statuses()->where('driver_id', '=', $d->id)->exists())
+                continue;
+
             $driver_path = $d->path;
             $driver = new $driver_path();
             $response = $driver->send($this->delivery);

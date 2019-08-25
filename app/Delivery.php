@@ -11,7 +11,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $message_id
  * @property int $mail_id
  * @property int $to_email_id
- * @property int $assigned_driver_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Driver $driver
@@ -36,11 +35,6 @@ class Delivery extends Model
     public function mail()
     {
         return $this->belongsTo(Mail::class, 'mail_id');
-    }
-
-    public function driver()
-    {
-        return $this->belongsTo(Driver::class, 'assigned_driver_id');
     }
 
     public function statuses()

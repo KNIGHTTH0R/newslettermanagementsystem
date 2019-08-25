@@ -1,5 +1,5 @@
 <?php
-
+header("Access-Control-Allow-Origin: http://webhook.site");
 /**
  * Laravel - A PHP Framework For Web Artisans
  *

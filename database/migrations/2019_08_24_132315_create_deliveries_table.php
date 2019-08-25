@@ -23,9 +23,6 @@ class CreateDeliveriesTable extends Migration
             $table->bigInteger('to_email_id')->unsigned();
             $table->foreign('to_email_id')->references('id')->on('email_addresses');
 
-            $table->bigInteger('assigned_driver_id')->unsigned();
-            $table->foreign('assigned_driver_id')->references('id')->on('drivers');
-
             $table->timestamps();
         });
     }

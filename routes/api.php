@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +12,14 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::prefix('webhook')->group(function () {
+    Route::post('sendgrid', function () {
+        $payload = json_decode(request()->getContent(), true);
+        \App\MailDrivers\SendGrid\Webhook::handle($payload);
+    });
+
+    Route::post('mailjet', function () {
+        $payload = json_decode(request()->getContent(), true);
+        \App\MailDrivers\Mailjet\Webhook::handle($payload);
+    });
 });
