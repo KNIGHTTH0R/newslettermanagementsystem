@@ -18,9 +18,13 @@ Route::get('/', function () {
     //dd(json_encode((new \App\Mail\EmailAddress("x@c.com", "jjj"))->jsonSerialize()));
 
     $mail = \App\Mail::find(1);
-    $driver = new \App\MailDrivers\SendGrid\Driver(env("SENDGRID_API_KEY"));
+    $delivery = \App\Delivery::find(1);
+    //dd($mail->deliveries);
+    //$driver = new \App\MailDrivers\SendGrid\Driver(env("SENDGRID_API_KEY"));
+    $driver = new \App\MailDrivers\Mailjet\Driver(env("MJ_APIKEY_PUBLIC"), env("MJ_APIKEY_PRIVATE"));
     //dd($mail->toEmailAddresses->all());
-    dd($driver->send($mail));
+    //print(json_encode($driver->jsonHelperMail($delivery)));exit;
+    dd($driver->send($delivery));
 
     return view('welcome');
 });

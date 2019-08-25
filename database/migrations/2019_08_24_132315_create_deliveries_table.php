@@ -1,0 +1,43 @@
+<?php
+
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class CreateDeliveriesTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('deliveries', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->boolean('if_terminated')->default(0);
+            $table->string('message_id', 50)->nullable()->unique();
+
+            $table->bigInteger('mail_id')->unsigned();
+            $table->foreign('mail_id')->references('id')->on('mails');
+
+            $table->bigInteger('to_email_id')->unsigned();
+            $table->foreign('to_email_id')->references('id')->on('email_addresses');
+
+            $table->bigInteger('assigned_driver_id')->unsigned();
+            $table->foreign('assigned_driver_id')->references('id')->on('drivers');
+
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('deliveries');
+    }
+}

@@ -6,6 +6,7 @@ namespace App\MailDrivers\SendGrid;
 
 use App\Attachment;
 use App\Content;
+use App\Delivery;
 use App\EmailAddress;
 use App\Mail;
 use GuzzleHttp\Client;
@@ -39,10 +40,10 @@ class Driver
     /**
      * Sends an e-mail to SendGrid API
      *
-     * @param Mail $mail
+     * @param Delivery $delivery
      * @return array
      */
-    public function send(Mail $mail)
+    public function send(Delivery $delivery)
     {
         try {
             $client = new Client(); //GuzzleHttp\Client
@@ -51,7 +52,7 @@ class Driver
                     'Authorization' => 'Bearer ' . $this->api_key,
                     'Content-Type' => 'application/json'
                 ],
-                RequestOptions::JSON => $this->jsonHelperMail($mail)
+                RequestOptions::JSON => $this->jsonHelperMail($delivery)
             ]);
 
             return [
@@ -73,20 +74,31 @@ class Driver
     /**
      * Return an array representing a Mail object for SendGrid API
      *
-     * @param Mail $mail
+     * @param Delivery $delivery
      * @return array
      */
-    public function jsonHelperMail(Mail $mail)
+    public function jsonHelperMail(Delivery $delivery)
     {
+        $mail = $delivery->mail;
         return
             [
                 'from' => $mail->fromEmailAddress ? $this->jsonHelperEmailAddress($mail->fromEmailAddress) : null,
                 'personalizations' => [
-                    ['to' => $mail->toEmailAddresses ? array_map(array($this, 'jsonHelperEmailAddress'), $mail->toEmailAddresses->all()) : null]
+                    [
+                        'to' => [
+                            [
+                                'email' => $delivery->to_email->email,
+                                'name' => $delivery->to_email->name,
+                            ]
+                        ]
+                    ]
                 ],
                 'reply_to' => $mail->replyToEmailAddress ? $this->jsonHelperEmailAddress($mail->replyToEmailAddress) : null,
                 'subject' => $mail->subject ?: null,
-                'content' => $mail->contents ? array_map(array($this, 'jsonHelperContent'), $mail->contents->all()) : null,
+                'content' => [
+                    ['type' => "text/plain", 'value' => $mail->text_content],
+                    ['type' => "text/html", 'value' => $mail->html_content],
+                ],
                 'attachments' => $mail->attachments ? array_map(array($this, 'jsonHelperAttachment'), $mail->attachments->all()) : null
             ];
     }
@@ -102,24 +114,6 @@ class Driver
             [
                 'name' => $email_address->name,
                 'email' => $email_address->email
-            ],
-            function ($value) {
-                return $value !== null;
-            }
-        ) ?: null;
-    }
-
-    /**
-     * Return an array representing a Content object SendGrid API
-     *
-     * @return array
-     */
-    public function jsonHelperContent(Content $content)
-    {
-        return array_filter(
-            [
-                'type' => $content->type,
-                'value' => $content->value
             ],
             function ($value) {
                 return $value !== null;

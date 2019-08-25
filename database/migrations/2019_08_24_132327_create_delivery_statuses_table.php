@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMailStatusesTable extends Migration
+class CreateDeliveryStatusesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateMailStatusesTable extends Migration
      */
     public function up()
     {
-        Schema::create('mail_statuses', function (Blueprint $table) {
+        Schema::create('delivery_statuses', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('status', 255);
             $table->text('details')->nullable();
@@ -21,8 +21,8 @@ class CreateMailStatusesTable extends Migration
             $table->bigInteger('driver_id')->unsigned();
             $table->foreign('driver_id')->references('id')->on('drivers');
 
-            $table->bigInteger('mail_id')->unsigned();
-            $table->foreign('mail_id')->references('id')->on('mails');
+            $table->bigInteger('delivery_id')->unsigned();
+            $table->foreign('delivery_id')->references('id')->on('deliveries');
 
             $table->timestamps();
         });
@@ -35,6 +35,6 @@ class CreateMailStatusesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('mail_statuses');
+        Schema::dropIfExists('delivery_statuses');
     }
 }

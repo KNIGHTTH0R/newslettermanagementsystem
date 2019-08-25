@@ -27,12 +27,13 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Mail[] $fromMails
  * @property-read \App\Mail|null $receivingMail
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Mail[] $replyToMails
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Delivery[] $deliveries
  */
 class EmailAddress extends Model
 {
-    public function receivingMail()
+    public function deliveries()
     {
-        return $this->belongsTo(Mail::class, 'receiving_mail_id');
+        return $this->hasMany(Delivery::class, 'to_email_id');
     }
 
     public function replyToMails()

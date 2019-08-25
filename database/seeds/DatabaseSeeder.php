@@ -19,8 +19,8 @@ class DatabaseSeeder extends Seeder
         $this->command->info('Mails table seeded!');
         $this->call('AttachmentTableSeeder');
         $this->command->info('Attachments table seeded!');
-        $this->call('ContentTableSeeder');
-        $this->command->info('Contents table seeded!');
+        $this->call('DeliveryTableSeeder');
+        $this->command->info('Deliveries table seeded!');
     }
 }
 
@@ -46,19 +46,16 @@ class EmailAddressTableSeeder extends Seeder
                 'id' => '1',
                 'name' => 'Barış Çimen',
                 'email' => 'barcimen@hotmail.com',
-                'receiving_mail_id' => null,
             ],
             [
                 'id' => '2',
                 'name' => 'Barış Çimen',
                 'email' => 'barcimen@gmail.com',
-                'receiving_mail_id' => '1',
             ],
             [
                 'id' => '3',
                 'name' => 'Barış Çimen',
                 'email' => 'baris.cimen@boun.edu.tr',
-                'receiving_mail_id' => '1',
             ],
         ]);
     }
@@ -74,9 +71,9 @@ class MailTableSeeder extends Seeder
                 'id' => '1',
                 'subject' => 'This Is A Mail Subject',
                 'from_email_id' => '1',
-                //'reply_to_email_id' => '1',
-                'assigned_driver_id' => "1",
-                'if_terminated' => "0",
+                'reply_to_email_id' => '2',
+                'html_content' => "<strong>“Simplicity is the soul of efficiency.”</strong> – Austin Freeman",
+                'text_content' => "“Simplicity is the soul of efficiency.” – Austin Freeman",
             ]
         ]);
     }
@@ -93,23 +90,25 @@ class AttachmentTableSeeder extends Seeder
     }
 }
 
-class ContentTableSeeder extends Seeder
+class DeliveryTableSeeder extends Seeder
 {
     public function run()
     {
-        \Illuminate\Support\Facades\DB::table('contents')->delete();
-        \Illuminate\Support\Facades\DB::table('contents')->insert([
+        \Illuminate\Support\Facades\DB::table('deliveries')->delete();
+        \Illuminate\Support\Facades\DB::table('deliveries')->insert([
             [
                 'id' => '1',
                 'mail_id' => '1',
-                'type' => 'text/plain',
-                'value' => "“Simplicity is the soul of efficiency.” – Austin Freeman",
+                'to_email_id' => '2',
+                'assigned_driver_id' => '1',
+                'if_terminated' => "0",
             ],
             [
                 'id' => '2',
                 'mail_id' => '1',
-                'type' => 'text/html',
-                'value' => "<strong>“Simplicity is the soul of efficiency.”</strong> – Austin Freeman",
+                'to_email_id' => '3',
+                'assigned_driver_id' => '1',
+                'if_terminated' => "0",
             ],
         ]);
     }

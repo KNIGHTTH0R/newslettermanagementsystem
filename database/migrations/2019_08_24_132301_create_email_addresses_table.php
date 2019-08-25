@@ -17,7 +17,6 @@ class CreateEmailAddressesTable extends Migration
             $table->bigIncrements('id');
             $table->string('name', 255)->nullable();
             $table->string('email', 255);
-            $table->bigInteger('receiving_mail_id')->nullable()->unsigned();
             $table->timestamps();
         });
     }
