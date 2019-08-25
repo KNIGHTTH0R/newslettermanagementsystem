@@ -74,7 +74,7 @@ class APIController extends Controller
             return response()->json($validator->errors(), 400);
         }
 
-        //dd($data);
+        dd($data['to']);
 
         DB::transaction(function() use ($data)
         {
@@ -110,8 +110,8 @@ class APIController extends Controller
 
             foreach ($data['to'] as $to) {
                 $t = EmailAddress::create([
-                    'name' => $data['replyTo']['name'],
-                    'email' => $data['replyTo']['email'],
+                    'name' => $to['name'],
+                    'email' => $to['email'],
                 ]);
 
                 $delivery = Delivery::create([
