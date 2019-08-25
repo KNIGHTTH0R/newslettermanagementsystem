@@ -11,6 +11,7 @@ use App\EmailAddress;
 use App\Mail;
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
+use Illuminate\Support\Facades\Log;
 
 class Driver
 {
@@ -24,8 +25,10 @@ class Driver
      * Driver constructor.
      * @param $api_key
      */
-    public function __construct($api_key)
+    public function __construct($api_key = null)
     {
+        if (!$api_key)
+            $api_key = env("SENDGRID_API_KEY");
         $this->setApiKey($api_key);
     }
 
@@ -56,12 +59,12 @@ class Driver
             ]);
 
             return [
-                'status' => $result->getReasonPhrase(),
+                'status' => $result->getReasonPhrase() == "Accepted" ? "Sent":"Error",
                 'code' => $result->getStatusCode(),
                 'message_id' => $result->getHeader("X-Message-Id")[0],
             ];
         } catch (\Exception $e) {
-            //echo 'Caught exception: ' . $e->getMessage() . "\n";
+            Log::error('Caught exception: ' . $e->getMessage() . "\n");
 
             return [
                 'status' => "Fatal Error",

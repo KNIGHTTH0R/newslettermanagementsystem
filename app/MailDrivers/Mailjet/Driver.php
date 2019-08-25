@@ -11,6 +11,7 @@ use App\EmailAddress;
 use App\Mail;
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
+use Illuminate\Support\Facades\Log;
 
 class Driver
 {
@@ -27,8 +28,13 @@ class Driver
      * Driver constructor.
      * @param $api_key
      */
-    public function __construct($api_pub_key, $api_pri_key)
+    public function __construct($api_pub_key = null, $api_pri_key = null)
     {
+        if (!$api_pub_key)
+            $api_pub_key = env("MJ_APIKEY_PUBLIC");
+        if (!$api_pri_key)
+            $api_pri_key = env("MJ_APIKEY_PRIVATE");
+
         $this->setApiPubKey($api_pub_key);
         $this->setApiPriKey($api_pri_key);
     }
@@ -70,12 +76,12 @@ class Driver
             $res = json_decode($result->getBody());
 
             return [
-                'status' => $res->Messages[0]->Status,
+                'status' => $res->Messages[0]->Status == "success" ? "Sent":"Error",
                 'code' => $result->getStatusCode(),
                 'message_id' => $res->Messages[0]->To[0]->MessageID,
             ];
         } catch (\Exception $e) {
-            //echo 'Caught exception: ' . $e->getMessage() . "\n";
+            Log::error('Caught exception: ' . $e->getMessage() . "\n");
 
             return [
                 'status' => "Fatal Error",
