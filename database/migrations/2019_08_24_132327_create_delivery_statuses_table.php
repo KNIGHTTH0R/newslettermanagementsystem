@@ -19,10 +19,10 @@ class CreateDeliveryStatusesTable extends Migration
             $table->text('details')->nullable();
 
             $table->bigInteger('driver_id')->unsigned();
-            $table->foreign('driver_id')->references('id')->on('drivers');
+            $table->foreign('driver_id')->references('id')->on('drivers')->onDelete('cascade');
 
             $table->bigInteger('delivery_id')->unsigned();
-            $table->foreign('delivery_id')->references('id')->on('deliveries');
+            $table->foreign('delivery_id')->references('id')->on('deliveries')->onDelete('cascade');
 
             $table->timestamps();
         });

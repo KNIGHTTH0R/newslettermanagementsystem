@@ -18,10 +18,10 @@ class CreateDeliveriesTable extends Migration
             $table->string('message_id', 50)->nullable()->unique();
 
             $table->bigInteger('mail_id')->unsigned();
-            $table->foreign('mail_id')->references('id')->on('mails');
+            $table->foreign('mail_id')->references('id')->on('mails')->onDelete('cascade');
 
             $table->bigInteger('to_email_id')->unsigned();
-            $table->foreign('to_email_id')->references('id')->on('email_addresses');
+            $table->foreign('to_email_id')->references('id')->on('email_addresses')->onDelete('cascade');
 
             $table->timestamps();
         });

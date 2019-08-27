@@ -341,7 +341,7 @@
                                 return res.json();
                             })
                             .then(data => {
-                                if (this.status_code === 200) {
+                                if (this.status_code === 201) {
                                     alert('Mail sent!');
                                     this.clearForm();
                                     this.fetchDeliveries();

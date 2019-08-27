@@ -25,7 +25,7 @@ class DeliveryResource extends Resource
             'from_email' => $this->mail->fromEmailAddress->email,
             'reply_to_email' => optional($this->mail->replyToEmailAddress)->email,
             'to_email' => $this->to_email->email,
-            'status' => $this->getLatestStatus(),
+            'status' => $this->getLatestStatus() ?: "In queue",
             'has_attachment' => $this->mail->attachments()->exists(),
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),
         ];

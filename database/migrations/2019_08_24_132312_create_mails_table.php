@@ -20,10 +20,10 @@ class CreateMailsTable extends Migration
             $table->text('text_content')->nullable();
 
             $table->bigInteger('from_email_id')->unsigned();
-            $table->foreign('from_email_id')->references('id')->on('email_addresses');
+            $table->foreign('from_email_id')->references('id')->on('email_addresses')->onDelete('cascade');
 
             $table->bigInteger('reply_to_email_id')->unsigned()->nullable();
-            $table->foreign('reply_to_email_id')->references('id')->on('email_addresses');
+            $table->foreign('reply_to_email_id')->references('id')->on('email_addresses')->onDelete('cascade');
 
             $table->timestamps();
         });

@@ -20,7 +20,7 @@ class CreateAttachmentsTable extends Migration
             $table->longText('content');
 
             $table->bigInteger('mail_id')->unsigned();
-            $table->foreign('mail_id')->references('id')->on('mails');
+            $table->foreign('mail_id')->references('id')->on('mails')->onDelete('cascade');
 
             $table->timestamps();
         });

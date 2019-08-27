@@ -1,25 +1,25 @@
 {
     "from": {
-        "email": "barcimen@hotmail.com",
-        "name": "Barış Çimen"
+        "email": "from@example.com",
+        "name": "From Email"
     },
     "replyTo": {
-        "email": "barcimen@live.com",
-        "name": "Bar Cim"
+        "email": "replyTo@example.com",
+        "name": "ReplyTo Email"
     },
     "to": [
         {
-            "email": "barcimen@gmail.com",
-            "name": "passenger 1"
+            "email": "user1@example.com",
+            "name": "User 1"
         },
         {
-            "email": "baris.cimen@boun.edu.tr",
-            "name": "passenger 2"
+            "email": "user2@example.com",
+            "name": "User 2"
         }
     ],
-    "subject": "Your email flight plan!",
-    "text": "Dear passenger 1, welcome to Mailjet! May the delivery force be with you!",
-    "html": "<h3>Dear passenger 1, welcome to <a href=\"https://www.mailjet.com/\">Mailjet</a>!</h3><br />May the delivery force be with you!",
+    "subject": "Test subject!",
+    "text": "Dear user, May the force be with you!",
+    "html": "<h3>Dear user,</h3> May the delivery force be with you!",
     "attachments": [
         {
             "contentType": "text/plain",
