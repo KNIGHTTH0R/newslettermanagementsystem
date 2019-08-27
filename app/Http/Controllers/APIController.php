@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Validator;
 class APIController extends Controller
 {
     /**
+     * Get deliveries as a collection
+     *
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function getDeliveries()
@@ -27,6 +29,8 @@ class APIController extends Controller
     }
 
     /**
+     * Get a delivery as a collection
+     *
      * @param $id
      * @return DeliveryResource
      */
@@ -39,7 +43,10 @@ class APIController extends Controller
     }
 
     /**
+     * Get delivery statuses of a delivery as a collection
+     *
      * @param $id
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function getDeliveryStatuses($id)
     {
@@ -50,7 +57,10 @@ class APIController extends Controller
     }
 
     /**
+     * Get mail attachments of an mail as a collection
+     *
      * @param $id
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function getMailAttachments($id)
     {
@@ -61,7 +71,11 @@ class APIController extends Controller
     }
 
     /**
+     * Create a mail and deliveries to be send
+     *
      * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Throwable
      */
     public function createMail(Request $request)
     {

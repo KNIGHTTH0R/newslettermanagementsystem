@@ -22,6 +22,9 @@ window.Vue = require('vue');
 Vue.component('navbar', require('./components/Navbar.vue').default);
 Vue.component('deliveries', require('./components/Deliveries.vue').default);
 
+import tinymce from 'vue-tinymce-editor';
+Vue.component('tinymce', tinymce);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

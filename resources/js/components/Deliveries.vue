@@ -37,8 +37,8 @@
             </div>
             <div class="form-group">
                 <label for="content_input" class="col-form-label">*Content</label>
-                <textarea id="content_input" class="form-control" placeholder="Content" v-model="content"
-                          required></textarea>
+                <tinymce id="content_input" v-model="content" required :plugins="tinymce_plugins"
+                         :other_options="tinymce_options"></tinymce>
             </div>
             <div class="form-group">
                 <label for="attachment_field" class="col-form-label">Attachments</label>
@@ -196,6 +196,11 @@
                 history_modal_open: false,
                 history: [],
                 waiting: false,
+                tinymce_plugins: ['image', 'textpattern', 'code', 'link', 'preview'],
+                tinymce_options: {
+                    height: "300",
+                    statusbar: false,
+                }
             };
         },
         created() {
