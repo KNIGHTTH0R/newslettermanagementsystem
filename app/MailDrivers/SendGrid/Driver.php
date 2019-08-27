@@ -72,6 +72,7 @@ class Driver
                 'status' => "Fatal Error",
                 'code' => 999,
                 'message_id' => null,
+                'details' => $e->getMessage(),
             ];
         }
     }
@@ -86,7 +87,7 @@ class Driver
     {
         $mail = $delivery->mail;
         return
-            [
+            array_filter([
                 'from' => $mail->fromEmailAddress ? $this->jsonHelperEmailAddress($mail->fromEmailAddress) : null,
                 'personalizations' => [
                     [
@@ -105,7 +106,7 @@ class Driver
                     ['type' => "text/html", 'value' => $mail->html_content],
                 ],
                 'attachments' => $mail->attachments ? array_map(array($this, 'jsonHelperAttachment'), $mail->attachments->all()) : null
-            ];
+            ]);
     }
 
     /**

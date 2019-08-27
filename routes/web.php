@@ -1,5 +1,7 @@
 <?php
 
+use App\DeliveryStatus;
+use App\Driver;
 use GuzzleHttp\Client;
 
 /*
@@ -16,16 +18,16 @@ use GuzzleHttp\Client;
 Route::get('/', function () {
 
 
-    $delivery = \App\Delivery::find(1);
+    //$delivery = \App\Delivery::find(1);
     //\App\Jobs\ProcessSendMail::dispatch($delivery);
-    return \App\Http\Resources\DeliveryStatusResource::collection(\App\DeliveryStatus::paginate(15));
-    return \App\Http\Resources\DeliveryResource::collection(\App\Delivery::paginate(15));
-    dd(0);
+    //return \App\Http\Resources\DeliveryStatusResource::collection(\App\DeliveryStatus::paginate(15));
+    //return \App\Http\Resources\DeliveryResource::collection(\App\Delivery::paginate(15));
+    //dd(0);
 
 
     //$driver = new \App\MailDrivers\Mailjet\Driver(env("MJ_APIKEY_PUBLIC"), env("MJ_APIKEY_PRIVATE"));
-    $driver = new \App\MailDrivers\SendGrid\Driver(env("SENDGRID_API_KEY"));
-    dd($driver->send($delivery));
+    //$driver = new \App\MailDrivers\SendGrid\Driver(env("SENDGRID_API_KEY"));
+    //dd($driver->send($delivery));
 
 
 

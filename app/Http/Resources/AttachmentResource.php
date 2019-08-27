@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\Resource;
 
-class DeliveryStatusResource extends Resource
+class AttachmentResource extends Resource
 {
     /**
      * Transform the resource into an array.
@@ -18,10 +18,10 @@ class DeliveryStatusResource extends Resource
 
         return [
             'id' => $this->id,
-            'status' => $this->status,
-            'details' => $this->details,
-            'driver' => $this->driver->name,
-            'delivery_id' => $this->delivery_id,
+            'filename' => $this->filename,
+            'type' => $this->type,
+            'content' => $this->content,
+            'mail_id' => $this->mail_id,
             'created_at' => $this->created_at->format("Y-m-d H:i:s"),
         ];
     }

@@ -67,6 +67,6 @@ class Delivery extends Model
 
     public function getLatestStatus()
     {
-        return optional($this->statuses()->latest()->first())->status;
+        return optional($this->statuses()->orderByDesc('id')->first())->status;
     }
 }

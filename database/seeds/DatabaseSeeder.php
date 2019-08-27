@@ -13,14 +13,14 @@ class DatabaseSeeder extends Seeder
     {
         $this->call('DriverTableSeeder');
         $this->command->info('Drivers table seeded!');
-        $this->call('EmailAddressTableSeeder');
+        /*$this->call('EmailAddressTableSeeder');
         $this->command->info('EmailAddresses table seeded!');
         $this->call('MailTableSeeder');
         $this->command->info('Mails table seeded!');
         $this->call('AttachmentTableSeeder');
         $this->command->info('Attachments table seeded!');
         $this->call('DeliveryTableSeeder');
-        $this->command->info('Deliveries table seeded!');
+        $this->command->info('Deliveries table seeded!');*/
     }
 }
 

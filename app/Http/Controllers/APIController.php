@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Attachment;
 use App\Delivery;
 use App\EmailAddress;
+use App\Http\Resources\AttachmentResource;
 use App\Http\Resources\DeliveryResource;
 use App\Http\Resources\DeliveryStatusResource;
 use App\Mail;
@@ -20,7 +21,7 @@ class APIController extends Controller
     public function getDeliveries()
     {
         // Get deliveries
-        $deliveries = Delivery::paginate(15);
+        $deliveries = Delivery::orderByDesc('id')->paginate(5);
         // Return collection of deliveries as a resource
         return DeliveryResource::collection($deliveries);
     }
@@ -45,7 +46,18 @@ class APIController extends Controller
         // Get delivery
         $delivery = Delivery::findOrFail($id);
         // Return collection of delivery statuses as a resource
-        return DeliveryStatusResource::collection($delivery->statuses);
+        return DeliveryStatusResource::collection($delivery->statuses()->orderByDesc('id')->get());
+    }
+
+    /**
+     * @param $id
+     */
+    public function getMailAttachments($id)
+    {
+        // Get mail
+        $mail = Mail::findOrFail($id);
+        // Return collection of delivery statuses as a resource
+        return AttachmentResource::collection($mail->attachments);
     }
 
     /**
@@ -57,7 +69,7 @@ class APIController extends Controller
         $validator = Validator::make($data, [
             'from.email' => 'required|max:255|email',
             'from.name' => 'max:255',
-            'replyTo.email' => 'max:255|email',
+            'replyTo.email' => 'nullable|max:255|email',
             'replyTo.name' => 'max:255',
             'to' => 'required',
             'to.*.email' => 'required|max:255|email',
@@ -65,8 +77,8 @@ class APIController extends Controller
             'subject' => 'required|max:255',
             'text' => 'required',
             'html' => 'required',
-            'attachments.*.contentType' => 'required|max:50',
-            'attachments.*.filename' => 'required|max:50',
+            'attachments.*.contentType' => 'required|max:150',
+            'attachments.*.filename' => 'required|max:150',
             'attachments.*.base64Content' => 'required',
         ]);
 
@@ -79,14 +91,14 @@ class APIController extends Controller
         DB::transaction(function() use ($data)
         {
             $from_email = EmailAddress::create([
-                'name' => $data['from']['name'],
+                'name' => isset($data['from']['name']) ?: null,
                 'email' => $data['from']['email'],
             ]);
 
             $reply_to_email = null;
             if (isset($data['replyTo'])) {
                 $reply_to_email = EmailAddress::create([
-                    'name' => $data['replyTo']['name'],
+                    'name' => isset($data['replyTo']['name']) ?: null,
                     'email' => $data['replyTo']['email'],
                 ]);
             }
@@ -110,7 +122,7 @@ class APIController extends Controller
 
             foreach ($data['to'] as $to) {
                 $t = EmailAddress::create([
-                    'name' => $to['name'],
+                    'name' => isset($to['name']) ?: null,
                     'email' => $to['email'],
                 ]);
 

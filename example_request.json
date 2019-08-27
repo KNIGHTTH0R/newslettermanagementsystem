@@ -11,6 +11,10 @@
         {
             "email": "barcimen@gmail.com",
             "name": "passenger 1"
+        },
+        {
+            "email": "baris.cimen@boun.edu.tr",
+            "name": "passenger 2"
         }
     ],
     "subject": "Your email flight plan!",

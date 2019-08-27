@@ -33,5 +33,8 @@ Route::get('delivery/{id}', 'APIController@getDelivery');
 // List statuses of an delivery
 Route::get('delivery/{id}/status', 'APIController@getDeliveryStatuses');
 
+// List attachments of an mail
+Route::get('mail/{id}/attachment', 'APIController@getMailAttachments');
+
 // Create new mail
 Route::post('mail', 'APIController@createMail');

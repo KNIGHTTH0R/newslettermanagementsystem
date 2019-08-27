@@ -23,10 +23,11 @@ class DeliveryResource extends Resource
             'text_content' => $this->mail->text_content,
             'html_content' => $this->mail->html_content,
             'from_email' => $this->mail->fromEmailAddress->email,
-            'reply_to_email' => $this->mail->replyToEmailAddress->email,
+            'reply_to_email' => optional($this->mail->replyToEmailAddress)->email,
             'to_email' => $this->to_email->email,
             'status' => $this->getLatestStatus(),
-            'created_at' => $this->created_at,
+            'has_attachment' => $this->mail->attachments()->exists(),
+            'created_at' => $this->created_at->format('Y-m-d H:i:s'),
         ];
     }
 }

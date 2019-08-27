@@ -89,6 +89,7 @@ class Driver
                 'status' => "Fatal Error",
                 'code' => 999,
                 'message_id' => null,
+                'details' => $e->getMessage(),
             ];
         }
     }
