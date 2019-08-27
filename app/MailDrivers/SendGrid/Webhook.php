@@ -28,11 +28,11 @@ class Webhook
                 $delivery_status->driver_id = $driver->id;
                 $delivery_status->delivery_id = $delivery->id;
                 $delivery_status->save();
-            }
 
-            if (in_array($status, ['Bounced', 'Dropped'])) {
-                //If the mail service fails to deliver the mail, then we try another vendor if exists.
-                \App\Jobs\ProcessSendMail::dispatch($delivery);
+                if (in_array($status, ['Bounced', 'Dropped'])) {
+                    //If the mail service fails to deliver the mail, then we try another mail API if exists.
+                    \App\Jobs\ProcessSendMail::dispatch($delivery);
+                }
             }
         }
     }

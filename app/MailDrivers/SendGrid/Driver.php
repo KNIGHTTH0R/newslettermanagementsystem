@@ -58,8 +58,6 @@ class Driver
                 RequestOptions::JSON => $this->jsonHelperMail($delivery)
             ]);
 
-            Log::debug($result->getBody());
-
             return [
                 'status' => $result->getReasonPhrase() == "Accepted" ? "Sent":"Error",
                 'code' => $result->getStatusCode(),
