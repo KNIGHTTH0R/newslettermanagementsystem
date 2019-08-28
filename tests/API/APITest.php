@@ -91,9 +91,7 @@ class APITest extends TestCase
         $delivery_id = Delivery::first()->id;
         $this->json('GET',"api/delivery/" . $delivery_id . "/status")
             ->assertStatus(200)
-            ->assertSeeText("status")
-            ->assertSeeText("details")
-            ->assertSeeText("created_at");
+            ->assertSeeText("data");
     }
 
     /**
@@ -106,10 +104,7 @@ class APITest extends TestCase
         $mail_id = Mail::first()->id;
         $this->json('GET',"api/mail/" . $mail_id . "/attachment")
             ->assertStatus(200)
-            ->assertSeeText("filename")
-            ->assertSeeText("type")
-            ->assertSeeText("content")
-            ->assertSeeText("created_at");
+            ->assertSeeText("data");
     }
 
     /**
