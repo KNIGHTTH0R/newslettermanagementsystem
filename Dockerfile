@@ -39,11 +39,6 @@ RUN useradd -u 1000 -ms /bin/bash -g www www
 # Copy existing application directory contents
 COPY . /var/www
 
-# Copy existing application directory permissions
-COPY --chown=www:www . /var/www
-
-RUN echo "www:www" | chpasswd && adduser www sudo
-
 # Change current user to www
 USER www
 
