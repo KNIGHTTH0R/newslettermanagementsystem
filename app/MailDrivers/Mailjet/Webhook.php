@@ -16,7 +16,7 @@ class Webhook
     {
         $driver = \App\Driver::whereName("Mailjet")->first();
         foreach ($payload as $item) {
-            $message_id = $item['Message_GUID'];
+            $message_id = substr($item['MessageID'], 0, 14);
             $status = ucfirst($item['event']);
             if ($status == 'Sent')
                 $status = 'Delivered';

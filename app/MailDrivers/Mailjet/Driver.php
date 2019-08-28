@@ -78,7 +78,7 @@ class Driver
             return [
                 'status' => $res->Messages[0]->Status == "success" ? "Sent":"Error",
                 'code' => $result->getStatusCode(),
-                'message_id' => $res->Messages[0]->To[0]->MessageUUID,
+                'message_id' => substr($res->Messages[0]->To[0]->MessageID, 0, 14),
             ];
         } catch (\Exception $e) {
             Log::error('Caught exception: ' . $e->getMessage() . "\n");
