@@ -10,6 +10,8 @@ use App\DeliveryStatus;
 class Webhook
 {
     /**
+     * Handles webhook payload
+     *
      * @param $payload
      */
     public static function handle($payload)

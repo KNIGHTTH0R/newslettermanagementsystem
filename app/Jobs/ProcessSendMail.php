@@ -16,6 +16,9 @@ class ProcessSendMail implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    /**
+     * @var Delivery
+     */
     protected $delivery;
 
     /**

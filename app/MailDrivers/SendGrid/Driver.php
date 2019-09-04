@@ -25,17 +25,7 @@ class Driver
      */
     public function __construct($apiKey = null)
     {
-        if (!$apiKey)
-            $apiKey = env("SENDGRID_API_KEY");
-        $this->setApiKey($apiKey);
-    }
-
-    /**
-     * @param String $apiKey
-     */
-    public function setApiKey(String $apiKey)
-    {
-        $this->apiKey = $apiKey;
+            $this->apiKey = $apiKey ?: env("SENDGRID_API_KEY");
     }
 
     /**

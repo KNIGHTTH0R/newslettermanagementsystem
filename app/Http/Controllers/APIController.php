@@ -9,16 +9,19 @@ use App\Http\Resources\AttachmentResource;
 use App\Http\Resources\DeliveryResource;
 use App\Http\Resources\DeliveryStatusResource;
 use App\Mail;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Throwable;
 
 class APIController extends Controller
 {
     /**
      * Get deliveries as a collection
      *
-     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     * @return AnonymousResourceCollection
      */
     public function getDeliveries()
     {
@@ -46,7 +49,7 @@ class APIController extends Controller
      * Get delivery statuses of a delivery as a collection
      *
      * @param $id
-     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     * @return AnonymousResourceCollection
      */
     public function getDeliveryStatuses($id)
     {
@@ -60,7 +63,7 @@ class APIController extends Controller
      * Get mail attachments of an mail as a collection
      *
      * @param $id
-     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     * @return AnonymousResourceCollection
      */
     public function getMailAttachments($id)
     {
@@ -74,8 +77,8 @@ class APIController extends Controller
      * Create a mail and deliveries to be send
      *
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     * @throws \Throwable
+     * @return JsonResponse
+     * @throws Throwable
      */
     public function createMail(Request $request)
     {
@@ -138,7 +141,7 @@ class APIController extends Controller
                     'email' => $to['email'],
                 ]);
 
-                $delivery = Delivery::create([
+                Delivery::create([
                     'mail_id' => $mail->id,
                     'to_email_id' => $t->id,
                 ]);

@@ -30,10 +30,8 @@ class Driver
      */
     public function __construct($apiPubKey = null, $apiPriKey = null)
     {
-        if (!$apiPubKey)
-            $this->apiPubKey = env("MJ_APIKEY_PUBLIC");
-        if (!$apiPriKey)
-            $this->apiPriKey = env("MJ_APIKEY_PRIVATE");
+        $this->apiPubKey = $apiPubKey ?: env("MJ_APIKEY_PUBLIC");
+        $this->apiPriKey = $apiPriKey ?: env("MJ_APIKEY_PRIVATE");
 
     }
 
@@ -58,7 +56,7 @@ class Driver
             $res = json_decode($result->getBody());
 
             return [
-                'status' => $res->Messages[0]->Status == "success" ? "Sent":"Error",
+                'status' => $res->Messages[0]->Status == "success" ? "Sent" : "Error",
                 'code' => $result->getStatusCode(),
                 'message_id' => substr($res->Messages[0]->To[0]->MessageID, 0, 14),
             ];
