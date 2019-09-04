@@ -21,6 +21,9 @@ window.Vue = require('vue');
 
 Vue.component('navbar', require('./components/Navbar.vue').default);
 Vue.component('deliveries', require('./components/Deliveries.vue').default);
+Vue.component('historyModal', require('./components/HistoryModal.vue').default);
+Vue.component('attachmentModal', require('./components/AttachmentModal.vue').default);
+Vue.component('pager', require('./components/Pager.vue').default);
 
 import tinymce from 'vue-tinymce-editor';
 Vue.component('tinymce', tinymce);

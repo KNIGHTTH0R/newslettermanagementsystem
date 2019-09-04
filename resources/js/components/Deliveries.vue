@@ -1,6 +1,7 @@
 <template>
     <div>
         <h2>Send a new e-mail</h2>
+
         <form v-on:submit.prevent="addDelivery" class="mb-3">
             <div class="form-group">
                 <label for="fromInput" class="col-form-label">*From</label>
@@ -63,22 +64,9 @@
                     class="btn btn-danger btn-block mt-1">Cancel
             </button>
         </form>
-        <nav aria-label="Page navigation example" class="mt-2" v-if="deliveries.length">
-            <ul class="pagination">
-                <li v-bind:class="[{disabled: !pagination.prevPageUrl}]" class="page-item"><a class="page-link"
-                                                                                                href="#"
-                                                                                                v-on:click="fetchDeliveries(pagination.prevPageUrl)">Previous</a>
-                </li>
 
-                <li class="page-item disabled"><a class="page-link text-dark" href="#">Page {{ pagination.currentPage
-                    }} of {{ pagination.lastPage }}</a></li>
+        <pager v-on:page="fetchDeliveries" :pagination="pagination" v-if="deliveries.length"></pager>
 
-                <li v-bind:class="[{disabled: !pagination.nextPageUrl}]" class="page-item"><a class="page-link"
-                                                                                                href="#"
-                                                                                                v-on:click="fetchDeliveries(pagination.nextPageUrl)">Next</a>
-                </li>
-            </ul>
-        </nav>
         <div class="card card-body mb-2" v-for="delivery in deliveries" v-bind:key="delivery.id">
             <h4>{{ delivery.subject }}</h4>
             <p>{{ delivery.textContent }}</p>
@@ -99,66 +87,21 @@
                 <button class="btn btn-warning mb-2" v-on:click="showStatuses(delivery.id)">Show status history</button>
             </div>
         </div>
-        <div v-if="attachmentModalOpen" class="modal fade show" tabindex="-1" role="dialog"
-             style="display: block; padding-right: 17px;">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Attachments</h5>
-                    </div>
-                    <div class="modal-body">
-                        <li v-for="att in attachments"><a
-                            v-bind:href="'data:'+att.type+';base64,'+att.content"
-                            v-bind:download="att.filename">{{att.filename}}</a>
-                        </li>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                                v-on:click="attachmentModalOpen=false">Close
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div v-if="historyModalOpen" class="modal fade show" tabindex="-1" role="dialog"
-             style="display: block; padding-right: 17px;">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Delivery Status History</h5>
-                    </div>
-                    <div class="modal-body">
-                        <table class="table table-sm">
-                            <thead>
-                            <tr>
-                                <th scope="col">Status</th>
-                                <th scope="col">Date</th>
-                                <th scope="col">Driver</th>
-                                <th scope="col">Details</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr style="font-size: 8pt;" v-for="h in history">
-                                <td style="font-weight: bold;">{{h.status}}</td>
-                                <td>{{h.createdAt}}</td>
-                                <td>{{h.driver}}</td>
-                                <td style="word-break: break-word;">{{h.details}}</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                                v-on:click="historyModalOpen=false">Close
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
+
+
+        <attachment-modal v-if="attachmentModalOpen" :attachments="attachments"
+                          v-on:close="attachmentModalOpen = false"></attachment-modal>
+        <history-modal v-if="historyModalOpen" :history="history" v-on:close="historyModalOpen = false"></history-modal>
+
+
         <div v-if="historyModalOpen | attachmentModalOpen | waiting" id="overlay"></div>
+
+
         <div v-if="waiting" class="spinner-border loading" role="status">
             <span class="sr-only">Loading...</span>
         </div>
+
+
     </div>
 </template>
 
@@ -208,18 +151,18 @@
             this.fetchDeliveries();
 
             //refresh delivery information in every 3 seconds
-            setInterval( (() => {
+            setInterval((() => {
                 this.fetchDeliveries(this.currentPageUrl);
-            }).bind(this), 3000);
+            }).bind(this), 10000);
         },
         watch: {
             // here we convert html mail content to text content
-            content: () => {
+            content: function () {
                 this.mail.html = this.content;
                 this.mail.text = this.strip(this.content);
             },
 
-            replyToEmail: () => {
+            replyToEmail: function () {
                 if (this.replyToEmail.length === 0) {
                     this.mail.replyTo = '';
                 } else {
@@ -305,8 +248,8 @@
             },
             makePagination(meta, links) {
                 this.pagination = {
-                    currentPage: meta.currentPage,
-                    lastPage: meta.lastPage,
+                    currentPage: meta.current_page,
+                    lastPage: meta.last_page,
                     nextPageUrl: links.next,
                     prevPageUrl: links.prev
                 };
