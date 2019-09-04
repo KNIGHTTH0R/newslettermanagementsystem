@@ -11,8 +11,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $subject
  * @property string|null $html_content
  * @property string|null $text_content
- * @property int $from_email_id
- * @property int|null $reply_to_email_id
+ * @property int $fromEmail_id
+ * @property int|null $replyToEmail_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Attachment[] $attachments
@@ -32,14 +32,14 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Mail whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class Mail extends Model
+class Mail extends BaseModel
 {
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['subject','html_content','text_content','from_email_id','reply_to_email_id'];
+    protected $fillable = ['subject', 'html_content', 'text_content', 'from_email_id', 'reply_to_email_id'];
 
     public function fromEmailAddress()
     {

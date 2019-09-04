@@ -49,8 +49,8 @@ class ProcessSendMail implements ShouldQueue
             $delivery_status = new DeliveryStatus();
             $delivery_status->status = $response['status'];
             $delivery_status->details = json_encode($response);
-            $delivery_status->driver_id = $d->id;
-            $delivery_status->delivery_id = $this->delivery->id;
+            $delivery_status->driverId = $d->id;
+            $delivery_status->deliveryId = $this->delivery->id;
             $delivery_status->save();
 
             if ($response['status'] == 'Sent') {

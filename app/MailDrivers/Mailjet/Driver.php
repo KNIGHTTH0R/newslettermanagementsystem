@@ -15,44 +15,26 @@ use Illuminate\Support\Facades\Log;
 
 class Driver
 {
-    /** @var $api_key String Mailjet Public API Key */
-    private $api_pub_key;
+    /** @var $apiKey String Mailjet Public API Key */
+    private $apiPubKey;
 
-    /** @var $api_key String Mailjet Private API Key */
-    private $api_pri_key;
+    /** @var $apiKey String Mailjet Private API Key */
+    private $apiPriKey;
 
-    /** @var $api_key String Mailjet API Send Address */
-    private $send_address = "https://api.mailjet.com/v3.1/send";
+    /** @var $apiKey String Mailjet API Send Address */
+    private $sendAddress = "https://api.mailjet.com/v3.1/send";
 
     /**
      * Driver constructor.
-     * @param $api_key
+     * @param $apiKey
      */
-    public function __construct($api_pub_key = null, $api_pri_key = null)
+    public function __construct($apiPubKey = null, $apiPriKey = null)
     {
-        if (!$api_pub_key)
-            $api_pub_key = env("MJ_APIKEY_PUBLIC");
-        if (!$api_pri_key)
-            $api_pri_key = env("MJ_APIKEY_PRIVATE");
+        if (!$apiPubKey)
+            $this->apiPubKey = env("MJ_APIKEY_PUBLIC");
+        if (!$apiPriKey)
+            $this->apiPriKey = env("MJ_APIKEY_PRIVATE");
 
-        $this->setApiPubKey($api_pub_key);
-        $this->setApiPriKey($api_pri_key);
-    }
-
-    /**
-     * @param String $api_pub_key
-     */
-    public function setApiPubKey(String $api_pub_key): void
-    {
-        $this->api_pub_key = $api_pub_key;
-    }
-
-    /**
-     * @param String $api_pri_key
-     */
-    public function setApiPriKey(String $api_pri_key): void
-    {
-        $this->api_pri_key = $api_pri_key;
     }
 
     /**
@@ -65,8 +47,8 @@ class Driver
     {
         try {
             $client = new Client(); //GuzzleHttp\Client
-            $result = $client->post($this->send_address, [
-                'auth' => [$this->api_pub_key, $this->api_pri_key],
+            $result = $client->post($this->sendAddress, [
+                'auth' => [$this->apiPubKey, $this->apiPriKey],
                 'headers' => [
                     'Content-Type' => 'application/json'
                 ],
@@ -108,14 +90,14 @@ class Driver
                         'From' => $mail->fromEmailAddress ? $this->jsonHelperEmailAddress($mail->fromEmailAddress) : null,
                         'To' => [
                             [
-                                'Email' => $delivery->to_email->email,
-                                'Name' => $delivery->to_email->name,
+                                'Email' => $delivery->toEmail->email,
+                                'Name' => $delivery->toEmail->name,
                             ]
                         ],
                         //'ReplyTo' => $mail->replyToEmailAddress ? $this->jsonHelperEmailAddress($mail->replyToEmailAddress) : null,
                         'Subject' => $mail->subject ?: null,
-                        'TextPart' => $mail->text_content,
-                        'HTMLPart' => $mail->html_content,
+                        'TextPart' => $mail->textContent,
+                        'HTMLPart' => $mail->htmlContent,
                         'Attachments' => $mail->attachments ? array_map(array($this, 'jsonHelperAttachment'), $mail->attachments->all()) : null
                     ]]
             ];

@@ -27,7 +27,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Attachment whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class Attachment extends Model
+class Attachment extends BaseModel
 {
     /**
      * The attributes that are mass assignable.

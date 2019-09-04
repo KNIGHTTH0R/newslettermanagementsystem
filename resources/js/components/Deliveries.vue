@@ -3,17 +3,17 @@
         <h2>Send a new e-mail</h2>
         <form v-on:submit.prevent="addDelivery" class="mb-3">
             <div class="form-group">
-                <label for="from_input" class="col-form-label">*From</label>
-                <input id="from_input" type="email" class="form-control" placeholder="e.g. example@example.com"
+                <label for="fromInput" class="col-form-label">*From</label>
+                <input id="fromInput" type="email" class="form-control" placeholder="e.g. example@example.com"
                        v-model="mail.from.email" required>
             </div>
             <div class="form-group">
-                <label for="reply_to_input" class="col-form-label">Reply To</label>
-                <input id="reply_to_input" type="email" class="form-control" placeholder="e.g. example@example.com"
-                       v-model="reply_to_email" required>
+                <label for="replyToInput" class="col-form-label">Reply To</label>
+                <input id="replyToInput" type="email" class="form-control" placeholder="e.g. example@example.com"
+                       v-model="replyToEmail" required>
             </div>
             <div class="form-group">
-                <label for="to_input" class="col-form-label">*To(s)</label>
+                <label for="toInput" class="col-form-label">*To(s)</label>
                 <ul v-if="mail.to.length">
                     <li v-for="t in mail.to">{{t.email}}
                         <button type="button" class="btn btn-link btn-sm" title="Remove" v-on:click="removeToEmail(t)">
@@ -21,8 +21,8 @@
                     </li>
                 </ul>
                 <div class="input-group mb-3">
-                    <input id="to_input" type="email" class="form-control" placeholder="e.g. example@example.com"
-                           v-model="to_email" v-on:keydown.enter.prevent="addToEmail">
+                    <input id="toInput" type="email" class="form-control" placeholder="e.g. example@example.com"
+                           v-model="toEmail" v-on:keydown.enter.prevent="addToEmail">
                     <div class="input-group-append">
                         <button class="btn btn-primary" type="button" v-on:click="addToEmail"><i
                             class="fas fa-plus"></i> Add
@@ -31,17 +31,17 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="subject_input" class="col-form-label">*Subject</label>
-                <input id="subject_input" type="text" class="form-control" placeholder="Subject"
+                <label for="subjectInput" class="col-form-label">*Subject</label>
+                <input id="subjectInput" type="text" class="form-control" placeholder="Subject"
                        v-model="mail.subject" required>
             </div>
             <div class="form-group">
-                <label for="content_input" class="col-form-label">*Content</label>
-                <tinymce id="content_input" v-model="content" required :plugins="tinymce_plugins"
-                         :other_options="tinymce_options"></tinymce>
+                <label for="contentInput" class="col-form-label">*Content</label>
+                <tinymce id="contentInput" v-model="content" required :plugins="tinymcePlugins"
+                         :other_options="tinymceOptions"></tinymce>
             </div>
             <div class="form-group">
-                <label for="attachment_field" class="col-form-label">Attachments</label>
+                <label for="attachmentField" class="col-form-label">Attachments</label>
                 <ul v-if="mail.attachments.length">
                     <li v-for="att in mail.attachments"><a
                         v-bind:href="'data:'+att.contentType+';base64,'+att.base64Content"
@@ -51,9 +51,9 @@
                     </li>
                 </ul>
                 <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="attachment_field" ref="attachment_field"
+                    <input type="file" class="custom-file-input" id="attachmentField" ref="attachmentField"
                            v-on:change="onChangeFileUpload">
-                    <label class="custom-file-label" for="attachment_field">Choose a file</label>
+                    <label class="custom-file-label" for="attachmentField">Choose a file</label>
                 </div>
             </div>
             <button v-on:click="createMail" type="button"
@@ -65,41 +65,41 @@
         </form>
         <nav aria-label="Page navigation example" class="mt-2" v-if="deliveries.length">
             <ul class="pagination">
-                <li v-bind:class="[{disabled: !pagination.prev_page_url}]" class="page-item"><a class="page-link"
+                <li v-bind:class="[{disabled: !pagination.prevPageUrl}]" class="page-item"><a class="page-link"
                                                                                                 href="#"
-                                                                                                v-on:click="fetchDeliveries(pagination.prev_page_url)">Previous</a>
+                                                                                                v-on:click="fetchDeliveries(pagination.prevPageUrl)">Previous</a>
                 </li>
 
-                <li class="page-item disabled"><a class="page-link text-dark" href="#">Page {{ pagination.current_page
-                    }} of {{ pagination.last_page }}</a></li>
+                <li class="page-item disabled"><a class="page-link text-dark" href="#">Page {{ pagination.currentPage
+                    }} of {{ pagination.lastPage }}</a></li>
 
-                <li v-bind:class="[{disabled: !pagination.next_page_url}]" class="page-item"><a class="page-link"
+                <li v-bind:class="[{disabled: !pagination.nextPageUrl}]" class="page-item"><a class="page-link"
                                                                                                 href="#"
-                                                                                                v-on:click="fetchDeliveries(pagination.next_page_url)">Next</a>
+                                                                                                v-on:click="fetchDeliveries(pagination.nextPageUrl)">Next</a>
                 </li>
             </ul>
         </nav>
         <div class="card card-body mb-2" v-for="delivery in deliveries" v-bind:key="delivery.id">
             <h4>{{ delivery.subject }}</h4>
-            <p>{{ delivery.text_content }}</p>
+            <p>{{ delivery.textContent }}</p>
             <p style="font-size: 70%;">
-                <strong>From:</strong> {{ delivery.from_email }}<br>
-                <strong>Reply To:</strong> {{ delivery.reply_to_email }}<br>
-                <strong>To:</strong> {{ delivery.to_email }}<br>
+                <strong>From:</strong> {{ delivery.fromEmail }}<br>
+                <strong>Reply To:</strong> {{ delivery.replyToEmail }}<br>
+                <strong>To:</strong> {{ delivery.toEmail }}<br>
                 <strong>Status:</strong> {{ delivery.status }}<br>
-                <strong>Created At:</strong> {{ delivery.created_at }}<br>
+                <strong>Created At:</strong> {{ delivery.createdAt }}<br>
                 <strong>Delivery ID:</strong> {{ delivery.id }}<br>
-                <strong>Mail ID:</strong> {{ delivery.mail_id }}<br>
+                <strong>Mail ID:</strong> {{ delivery.mailId }}<br>
             </p>
             <hr>
             <div class="btn-group">
-                <button class="btn btn-info mb-2" v-bind:disabled="!delivery.has_attachment"
-                        v-on:click="showAttachments(delivery.mail_id)">Show attachments
+                <button class="btn btn-info mb-2" v-bind:disabled="!delivery.hasAttachment"
+                        v-on:click="showAttachments(delivery.mailId)">Show attachments
                 </button>
                 <button class="btn btn-warning mb-2" v-on:click="showStatuses(delivery.id)">Show status history</button>
             </div>
         </div>
-        <div v-if="attachment_modal_open" class="modal fade show" tabindex="-1" role="dialog"
+        <div v-if="attachmentModalOpen" class="modal fade show" tabindex="-1" role="dialog"
              style="display: block; padding-right: 17px;">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
@@ -114,13 +114,13 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                                v-on:click="attachment_modal_open=false">Close
+                                v-on:click="attachmentModalOpen=false">Close
                         </button>
                     </div>
                 </div>
             </div>
         </div>
-        <div v-if="history_modal_open" class="modal fade show" tabindex="-1" role="dialog"
+        <div v-if="historyModalOpen" class="modal fade show" tabindex="-1" role="dialog"
              style="display: block; padding-right: 17px;">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
@@ -140,7 +140,7 @@
                             <tbody>
                             <tr style="font-size: 8pt;" v-for="h in history">
                                 <td style="font-weight: bold;">{{h.status}}</td>
-                                <td>{{h.created_at}}</td>
+                                <td>{{h.createdAt}}</td>
                                 <td>{{h.driver}}</td>
                                 <td style="word-break: break-word;">{{h.details}}</td>
                             </tr>
@@ -149,13 +149,13 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                                v-on:click="history_modal_open=false">Close
+                                v-on:click="historyModalOpen=false">Close
                         </button>
                     </div>
                 </div>
             </div>
         </div>
-        <div v-if="history_modal_open | attachment_modal_open | waiting" id="overlay"></div>
+        <div v-if="historyModalOpen | attachmentModalOpen | waiting" id="overlay"></div>
         <div v-if="waiting" class="spinner-border loading" role="status">
             <span class="sr-only">Loading...</span>
         </div>
@@ -178,26 +178,26 @@
                     attachments: []
                 },
                 content: '',
-                reply_to_email: '',
-                to_email: '',
-                to_emails: [],
+                replyToEmail: '',
+                toEmail: '',
+                toEmails: [],
                 deliveries: [],
                 delivery: {
                     id: '',
                     title: '',
                     body: ''
                 },
-                delivery_id: '',
+                deliveryId: '',
                 pagination: {},
-                current_page_url: null,
-                status_code: null,
-                attachment_modal_open: false,
+                currentPageUrl: null,
+                statusCode: null,
+                attachmentModalOpen: false,
                 attachments: [],
-                history_modal_open: false,
+                historyModalOpen: false,
                 history: [],
                 waiting: false,
-                tinymce_plugins: ['image', 'textpattern', 'code', 'link', 'preview'],
-                tinymce_options: {
+                tinymcePlugins: ['image', 'textpattern', 'code', 'link', 'preview'],
+                tinymceOptions: {
                     height: "300",
                     statusbar: false,
                 }
@@ -208,34 +208,34 @@
             this.fetchDeliveries();
 
             //refresh delivery information in every 3 seconds
-            setInterval(function () {
-                this.fetchDeliveries(this.current_page_url);
-            }.bind(this), 3000);
+            setInterval( (() => {
+                this.fetchDeliveries(this.currentPageUrl);
+            }).bind(this), 3000);
         },
         watch: {
             // here we convert html mail content to text content
-            content: function () {
+            content: () => {
                 this.mail.html = this.content;
                 this.mail.text = this.strip(this.content);
             },
 
-            reply_to_email: function () {
-                if (this.reply_to_email.length === 0) {
+            replyToEmail: () => {
+                if (this.replyToEmail.length === 0) {
                     this.mail.replyTo = '';
                 } else {
                     this.mail.replyTo = {
-                        'email': this.reply_to_email
+                        'email': this.replyToEmail
                     };
                 }
             }
         },
         methods: {
             strip(html) {
-                var doc = new DOMParser().parseFromString(html, 'text/html');
+                let doc = new DOMParser().parseFromString(html, 'text/html');
                 return doc.body.textContent || "";
             },
             onChangeFileUpload() {
-                var file = this.$refs.attachment_field.files[0];
+                let file = this.$refs.attachmentField.files[0];
                 if (file) {
                     if (file.size > 1024 * 1024) {
                         alert("File size must be lower than 1MB!")
@@ -243,25 +243,25 @@
                         this.getBase64(file)
                     }
                 }
-                this.$refs.attachment_field.value = '';
+                this.$refs.attachmentField.value = '';
 
             },
             removeAttachment(attachment) {
-                var index = this.mail.attachments.indexOf(attachment);
+                let index = this.mail.attachments.indexOf(attachment);
                 if (index !== -1) this.mail.attachments.splice(index, 1);
             },
             getBase64(file) {
-                var reader = new FileReader();
+                let reader = new FileReader();
                 reader.readAsDataURL(file);
                 reader.onload = (e => {
                     this.addAttachment(reader.result, file);
                 });
-                reader.onerror = function (error) {
+                reader.onerror = error => {
                     alert('Error: ', error);
                 };
             },
             addAttachment(base64, file) {
-                var att = {
+                let att = {
                     contentType: file.type,
                     filename: file.name,
                     base64Content: base64.split(',')[1]
@@ -271,47 +271,45 @@
 
             },
             removeToEmail(email) {
-                var index = this.mail.to.indexOf(email);
+                let index = this.mail.to.indexOf(email);
                 if (index !== -1) this.mail.to.splice(index, 1);
 
-                index = this.to_emails.indexOf(email.email);
-                if (index !== -1) this.to_emails.splice(index, 1);
+                index = this.toEmails.indexOf(email.email);
+                if (index !== -1) this.toEmails.splice(index, 1);
             },
             addToEmail() {
-                if (this.validEmail(this.to_email)) {
-                    if (!this.to_emails.includes(this.to_email)) {
-                        this.mail.to.push({'email': this.to_email});
-                        this.to_emails.push(this.to_email);
+                if (this.validEmail(this.toEmail)) {
+                    if (!this.toEmails.includes(this.toEmail)) {
+                        this.mail.to.push({'email': this.toEmail});
+                        this.toEmails.push(this.toEmail);
                     }
-                    this.to_email = '';
+                    this.toEmail = '';
                 } else {
                     alert("Please enter a valid e-mail address!");
                 }
             },
-            validEmail: function (email) {
-                var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            validEmail: email => {
+                let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
                 return re.test(email);
             },
-            fetchDeliveries(page_url) {
-                let vm = this;
-                page_url = page_url || '/api/deliveries';
-                this.current_page_url = page_url;
-                fetch(page_url)
+            fetchDeliveries(pageUrl) {
+                pageUrl = pageUrl || '/api/deliveries';
+                this.currentPageUrl = pageUrl;
+                fetch(pageUrl)
                     .then(res => res.json())
                     .then(res => {
                         this.deliveries = res.data;
-                        vm.makePagination(res.meta, res.links);
+                        this.makePagination(res.meta, res.links);
                     })
                     .catch(err => console.log(err));
             },
             makePagination(meta, links) {
-                let pagination = {
-                    current_page: meta.current_page,
-                    last_page: meta.last_page,
-                    next_page_url: links.next,
-                    prev_page_url: links.prev
+                this.pagination = {
+                    currentPage: meta.currentPage,
+                    lastPage: meta.lastPage,
+                    nextPageUrl: links.next,
+                    prevPageUrl: links.prev
                 };
-                this.pagination = pagination;
             },
             checkForm() {
                 if (!this.validEmail(this.mail.from.email))
@@ -337,20 +335,20 @@
                             }
                         })
                             .then(res => {
-                                this.status_code = res.status;
+                                this.statusCode = res.status;
                                 return res.json();
                             })
                             .then(data => {
-                                if (this.status_code === 201) {
+                                if (this.statusCode === 201) {
                                     alert('Mail sent!');
                                     this.clearForm();
                                     this.fetchDeliveries();
-                                } else if (this.status_code === 500) {
+                                } else if (this.statusCode === 500) {
                                     alert("Internal Server Error!");
                                 } else {
                                     alert(JSON.stringify(data));
                                 }
-                                this.status_code = null;
+                                this.statusCode = null;
                                 this.waiting = false;
                             })
                             .catch(err => alert(err));
@@ -373,9 +371,9 @@
                     attachments: []
                 };
                 this.content = '';
-                this.reply_to_email = '';
-                this.to_email = '';
-                this.to_emails = [];
+                this.replyToEmail = '';
+                this.toEmail = '';
+                this.toEmails = [];
             },
             showStatuses(id) {
                 this.waiting = true;
@@ -385,7 +383,7 @@
                     .then(res => res.json())
                     .then(data => {
                         this.history = data.data;
-                        this.history_modal_open = true;
+                        this.historyModalOpen = true;
                     })
                     .catch(err => alert(err))
                     .finally(() => this.waiting = false);
@@ -399,7 +397,7 @@
                     .then(res => res.json())
                     .then(data => {
                         this.attachments = data.data;
-                        this.attachment_modal_open = true;
+                        this.attachmentModalOpen = true;
                     })
                     .catch(err => alert(err))
                     .finally(() => this.waiting = false);

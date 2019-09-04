@@ -16,17 +16,17 @@ class Webhook
     {
         $driver = \App\Driver::whereName("SendGrid")->first();
         foreach ($payload as $item) {
-            $message_id = explode('.', $item['sg_message_id'])[0];
+            $messageId = explode('.', $item['sg_message_id'])[0];
             $status = ucfirst($item['event']);
 
-            $delivery = Delivery::whereMessageId($message_id)->first();
+            $delivery = Delivery::whereMessageId($messageId)->first();
 
             if ($delivery) {
                 $delivery_status = new DeliveryStatus();
                 $delivery_status->status = $status;
                 $delivery_status->details = json_encode($item);
-                $delivery_status->driver_id = $driver->id;
-                $delivery_status->delivery_id = $delivery->id;
+                $delivery_status->driverId = $driver->id;
+                $delivery_status->deliveryId = $delivery->id;
                 $delivery_status->save();
 
                 if (in_array($status, ['Bounce', 'Bounced', 'Dropped'])) {

@@ -1,5 +1,6 @@
 <?php
 
+use App\Delivery;
 use App\DeliveryStatus;
 use App\Driver;
 use GuzzleHttp\Client;

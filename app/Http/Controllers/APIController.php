@@ -100,18 +100,16 @@ class APIController extends Controller
             return response()->json($validator->errors(), 400);
         }
 
-        //dd($data['to']);
-
         DB::transaction(function() use ($data)
         {
-            $from_email = EmailAddress::create([
+            $fromEmail = EmailAddress::create([
                 'name' => isset($data['from']['name']) ?: null,
                 'email' => $data['from']['email'],
             ]);
 
-            $reply_to_email = null;
+            $replyToEmail = null;
             if (isset($data['replyTo'])) {
-                $reply_to_email = EmailAddress::create([
+                $replyToEmail = EmailAddress::create([
                     'name' => isset($data['replyTo']['name']) ?: null,
                     'email' => $data['replyTo']['email'],
                 ]);
@@ -121,8 +119,8 @@ class APIController extends Controller
                 'subject' => $data['subject'],
                 'html_content' => $data['html'],
                 'text_content' => $data['text'],
-                'from_email_id' => $from_email->id,
-                'reply_to_email_id' => $reply_to_email ? $reply_to_email->id : null,
+                'from_email_id' => $fromEmail->id,
+                'reply_to_email_id' => $replyToEmail ? $replyToEmail->id : null,
             ]);
 
             foreach ($data['attachments'] as $attachment) {

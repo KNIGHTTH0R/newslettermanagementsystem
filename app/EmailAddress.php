@@ -29,7 +29,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Mail[] $replyToMails
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Delivery[] $deliveries
  */
-class EmailAddress extends Model
+class EmailAddress extends BaseModel
 {
     /**
      * The attributes that are mass assignable.

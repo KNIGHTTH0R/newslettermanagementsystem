@@ -21,8 +21,10 @@ class AttachmentResource extends Resource
             'filename' => $this->filename,
             'type' => $this->type,
             'content' => $this->content,
-            'mail_id' => $this->mail_id,
-            'created_at' => $this->created_at->format("Y-m-d H:i:s"),
+            'mail_id' => $this->mailId,
+            'created_at' => $this->createdAt->format("Y-m-d H:i:s"),
+            'mailId' => $this->mailId,
+            'createdAt' => $this->createdAt->format("Y-m-d H:i:s"),
         ];
     }
 }

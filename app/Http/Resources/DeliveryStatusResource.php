@@ -21,8 +21,10 @@ class DeliveryStatusResource extends Resource
             'status' => $this->status,
             'details' => $this->details,
             'driver' => $this->driver->name,
-            'delivery_id' => $this->delivery_id,
-            'created_at' => $this->created_at->format("Y-m-d H:i:s"),
+            'delivery_id' => $this->deliveryId,
+            'created_at' => $this->createdAt->format("Y-m-d H:i:s"),
+            'deliveryId' => $this->deliveryId,
+            'createdAt' => $this->createdAt->format("Y-m-d H:i:s"),
         ];
     }
 }

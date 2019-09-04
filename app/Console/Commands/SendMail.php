@@ -66,20 +66,20 @@ class SendMail extends Command
         ]);
 
         if ($validator->fails()) {
-            foreach ($validator->errors()->getMessages() as $error_messages) {
-                foreach ($error_messages as $error_message) {
-                    $this->error($error_message);
+            foreach ($validator->errors()->getMessages() as $errorMessages) {
+                foreach ($errorMessages as $errorMessage) {
+                    $this->error($errorMessage);
                 }
             }
         } else {
             DB::transaction(function () use ($data) {
-                $from_email = EmailAddress::create([
+                $fromEmail = EmailAddress::create([
                     'email' => $data['from'],
                 ]);
 
-                $reply_to_email = null;
+                $replyToEmail = null;
                 if (isset($data['replyTo'])) {
-                    $reply_to_email = EmailAddress::create([
+                    $replyToEmail = EmailAddress::create([
                         'email' => $data['replyTo'],
                     ]);
                 }
@@ -88,8 +88,8 @@ class SendMail extends Command
                     'subject' => $data['subject'],
                     'html_content' => strip_tags($data['content']),
                     'text_content' => $data['content'],
-                    'from_email_id' => $from_email->id,
-                    'reply_to_email_id' => $reply_to_email ? $reply_to_email->id : null,
+                    'from_email_id' => $fromEmail->id,
+                    'reply_to_email_id' => $replyToEmail ? $replyToEmail->id : null,
                 ]);
 
                 foreach ($data['to'] as $to) {

@@ -33,7 +33,7 @@ You can deploy the application by following the steps below:
  1. `git clone https://github.com/bariscimen/newslettermanagementsystem` 
  2. `cd newslettermanagementsystem`
  3. `docker-compose up -d`
- 4. `docker-compose exec -u root app bash install.sh`
+ 4. `docker-compose exec app php /var/www/artisan migrate --seed`
 
 Now, you can access the app at http://localhost/
   

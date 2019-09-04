@@ -26,7 +26,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Driver whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class Driver extends Model
+class Driver extends BaseModel
 {
     public function deliveries()
     {

@@ -16,19 +16,19 @@ class Webhook
     {
         $driver = \App\Driver::whereName("Mailjet")->first();
         foreach ($payload as $item) {
-            $message_id = substr($item['MessageID'], 0, 14);
+            $messageId = substr($item['MessageID'], 0, 14);
             $status = ucfirst($item['event']);
             if ($status == 'Sent')
                 $status = 'Delivered';
 
-            $delivery = Delivery::whereMessageId($message_id)->first();
+            $delivery = Delivery::whereMessageId($messageId)->first();
 
             if ($delivery) {
                 $delivery_status = new DeliveryStatus();
                 $delivery_status->status = $status;
                 $delivery_status->details = json_encode($item);
-                $delivery_status->driver_id = $driver->id;
-                $delivery_status->delivery_id = $delivery->id;
+                $delivery_status->driverId = $driver->id;
+                $delivery_status->deliveryId = $delivery->id;
                 $delivery_status->save();
 
                 if (in_array($status, ['Bounce', 'Blocked'])) {

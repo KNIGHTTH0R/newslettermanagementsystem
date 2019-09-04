@@ -18,36 +18,36 @@ class MailTest extends TestCase
      */
     public function testBasicTest()
     {
-        $from_email = EmailAddress::create([
+        $fromEmail = EmailAddress::create([
             'name' => 'Test Test',
             'email' => "test@test.com",
         ]);
 
-        $this->assertEquals('Test Test', $from_email->name);
-        $this->assertEquals('test@test.com', $from_email->email);
+        $this->assertEquals('Test Test', $fromEmail->name);
+        $this->assertEquals('test@test.com', $fromEmail->email);
 
-        $reply_to_email = EmailAddress::create([
+        $replyToEmail = EmailAddress::create([
             'name' => 'Test Test',
             'email' => "test@test.com",
         ]);
 
-        $this->assertEquals('Test Test', $reply_to_email->name);
-        $this->assertEquals('test@test.com', $reply_to_email->email);
+        $this->assertEquals('Test Test', $replyToEmail->name);
+        $this->assertEquals('test@test.com', $replyToEmail->email);
 
         $mail = Mail::create([
             'subject' => 'Subject',
             'html_content' => '<strong>Hi</strong>',
             'text_content' => 'Hi',
-            'from_email_id' => $from_email->id,
-            'reply_to_email_id' => $reply_to_email->id,
+            'from_email_id' => $fromEmail->id,
+            'reply_to_email_id' => $replyToEmail->id,
         ]);
 
         $this->assertEquals('Subject', $mail->subject);
-        $this->assertEquals('<strong>Hi</strong>', $mail->html_content);
-        $this->assertEquals('Hi', $mail->text_content);
+        $this->assertEquals('<strong>Hi</strong>', $mail->htmlContent);
+        $this->assertEquals('Hi', $mail->textContent);
 
-        $this->assertEquals($from_email->email, $mail->fromEmailAddress->email);
-        $this->assertEquals($reply_to_email->email, $mail->replyToEmailAddress->email);
+        $this->assertEquals($fromEmail->email, $mail->fromEmailAddress->email);
+        $this->assertEquals($replyToEmail->email, $mail->replyToEmailAddress->email);
 
         $attachment = Attachment::create([
             'filename' => "file.txt",
@@ -73,13 +73,13 @@ class MailTest extends TestCase
             'to_email_id' => $to->id,
         ]);
 
-        $this->assertEquals('Test Test', $mail->deliveries[0]->to_email->name);
-        $this->assertEquals('test@test.com', $mail->deliveries[0]->to_email->email);
+        $this->assertEquals('Test Test', $mail->deliveries[0]->toEmail->name);
+        $this->assertEquals('test@test.com', $mail->deliveries[0]->toEmail->email);
 
         $this->assertTrue($mail->delete());
         $this->assertTrue($to->delete());
-        $this->assertTrue($from_email->delete());
-        $this->assertTrue($reply_to_email->delete());
+        $this->assertTrue($fromEmail->delete());
+        $this->assertTrue($replyToEmail->delete());
 
 
     }

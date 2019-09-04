@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
  * App\Delivery
  *
  * @property int $id
- * @property string|null $message_id
+ * @property string|null $messageId
  * @property int $mail_id
  * @property int $to_email_id
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -31,7 +31,7 @@ use Illuminate\Database\Eloquent\Model;
  * @mixin \Eloquent
  * @property-read \App\EmailAddress $to_email
  */
-class Delivery extends Model
+class Delivery extends BaseModel
 {
     /**
      * The attributes that are mass assignable.

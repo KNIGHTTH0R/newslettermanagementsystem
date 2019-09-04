@@ -28,7 +28,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\DeliveryStatus whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class DeliveryStatus extends Model
+class DeliveryStatus extends BaseModel
 {
     public function delivery()
     {

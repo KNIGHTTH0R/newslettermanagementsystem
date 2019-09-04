@@ -5,39 +5,37 @@ namespace App\MailDrivers\SendGrid;
 
 
 use App\Attachment;
-use App\Content;
 use App\Delivery;
 use App\EmailAddress;
-use App\Mail;
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
 use Illuminate\Support\Facades\Log;
 
 class Driver
 {
-    /** @var $api_key String SendGrid API Key */
-    private $api_key;
+    /** @var $apiKey String SendGrid API Key */
+    private $apiKey;
 
-    /** @var $api_key String SendGrid API Send Address */
-    private $send_address = "https://api.sendgrid.com/v3/mail/send";
+    /** @var $apiKey String SendGrid API Send Address */
+    private $sendAddress = "https://api.sendgrid.com/v3/mail/send";
 
     /**
      * Driver constructor.
-     * @param $api_key
+     * @param $apiKey
      */
-    public function __construct($api_key = null)
+    public function __construct($apiKey = null)
     {
-        if (!$api_key)
-            $api_key = env("SENDGRID_API_KEY");
-        $this->setApiKey($api_key);
+        if (!$apiKey)
+            $apiKey = env("SENDGRID_API_KEY");
+        $this->setApiKey($apiKey);
     }
 
     /**
-     * @param String $api_key
+     * @param String $apiKey
      */
-    public function setApiKey(String $api_key)
+    public function setApiKey(String $apiKey)
     {
-        $this->api_key = $api_key;
+        $this->apiKey = $apiKey;
     }
 
     /**
@@ -50,9 +48,9 @@ class Driver
     {
         try {
             $client = new Client(); //GuzzleHttp\Client
-            $result = $client->post($this->send_address, [
+            $result = $client->post($this->sendAddress, [
                 'headers' => [
-                    'Authorization' => 'Bearer ' . $this->api_key,
+                    'Authorization' => 'Bearer ' . $this->apiKey,
                     'Content-Type' => 'application/json'
                 ],
                 RequestOptions::JSON => $this->jsonHelperMail($delivery)
@@ -91,8 +89,8 @@ class Driver
                     [
                         'to' => [
                             [
-                                'email' => $delivery->to_email->email,
-                                'name' => $delivery->to_email->name,
+                                'email' => $delivery->toEmail->email,
+                                'name' => $delivery->toEmail->name,
                             ]
                         ]
                     ]
@@ -100,8 +98,8 @@ class Driver
                 'reply_to' => $mail->replyToEmailAddress ? $this->jsonHelperEmailAddress($mail->replyToEmailAddress) : null,
                 'subject' => $mail->subject ?: null,
                 'content' => [
-                    ['type' => "text/plain", 'value' => $mail->text_content],
-                    ['type' => "text/html", 'value' => $mail->html_content],
+                    ['type' => "text/plain", 'value' => $mail->textContent],
+                    ['type' => "text/html", 'value' => $mail->htmlContent],
                 ],
                 'attachments' => $mail->attachments ? array_map(array($this, 'jsonHelperAttachment'), $mail->attachments->all()) : null
             ]);
