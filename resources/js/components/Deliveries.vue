@@ -255,15 +255,27 @@
                 };
             },
             checkForm() {
-                if (!this.validEmail(this.mail.from.email))
+                if (!this.validEmail(this.mail.from.email)) {
+                    alert("Please enter a valid 'From' e-mail address!");
                     return false;
-                if (this.mail.replyTo && !this.validEmail(this.mail.replyTo.email))
+                }
+                if (this.mail.replyTo && !this.validEmail(this.mail.replyTo.email)) {
+                    alert("Please enter a valid 'Reply To' e-mail address!");
                     return false;
-                if (this.mail.to.length === 0)
+                }
+                if (this.mail.to.length === 0) {
+                    alert("Please enter at least one valid 'To' e-mail address!");
                     return false;
-                if (this.mail.subject.length === 0)
+                }
+                if (this.mail.subject.length === 0) {
+                    alert("Subject must be entered!");
                     return false;
-                return this.content.length !== 0;
+                }
+                if (this.content.length !== 0) {
+                    alert("Content must be entered!");
+                    return false;
+                }
+                return true;
 
             },
             createMail() {
@@ -296,8 +308,6 @@
                             })
                             .catch(err => alert(err));
                     }
-                } else {
-                    alert("Please check form values!");
                 }
 
             },
