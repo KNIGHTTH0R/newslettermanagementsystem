@@ -271,7 +271,7 @@
                     alert("Subject must be entered!");
                     return false;
                 }
-                if (this.content.length !== 0) {
+                if (this.content.length === 0) {
                     alert("Content must be entered!");
                     return false;
                 }

@@ -16,16 +16,6 @@ class Delivery extends BaseModel
      */
     protected $fillable = ['mail_id', 'to_email_id'];
 
-    public static function boot()
-    {
-        parent::boot();
-
-        //once created/inserted successfully, send the delivery to API services
-        static::created(function ($model) {
-            ProcessSendMail::dispatch($model);
-        });
-    }
-
     /**
      * @return BelongsTo
      */
