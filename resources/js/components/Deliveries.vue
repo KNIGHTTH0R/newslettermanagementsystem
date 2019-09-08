@@ -150,10 +150,18 @@
             // fetch deliveries if any at startup
             this.fetchDeliveries();
 
-            //refresh delivery information in every 3 seconds
-            setInterval((() => {
-                this.fetchDeliveries(this.currentPageUrl);
-            }).bind(this), 10000);
+            // here we listen websocket for delivery status changes
+            Echo.channel('DeliveryChannel')
+                .listen('WebsocketDeliveryStatusChangeEvent', (e) => {
+                    console.log(e);
+                    $.each(this.deliveries, function(key, value) {
+                        if(value.id == e.newDeliveryStatus.delivery_id) {
+                            value.status = e.newDeliveryStatus.status;
+                        }
+                    });
+                });
+
+
         },
         watch: {
             // here we convert html mail content to text content

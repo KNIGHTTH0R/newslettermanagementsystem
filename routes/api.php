@@ -26,12 +26,12 @@ Route::prefix('webhook')->group(function () {
             $delivery = Delivery::whereMessageId($messageId)->first();
 
             if ($delivery) {
-                $delivery_status = new DeliveryStatus();
-                $delivery_status->status = $status;
-                $delivery_status->details = json_encode($item);
-                $delivery_status->driverId = $driver->id;
-                $delivery_status->deliveryId = $delivery->id;
-                $delivery_status->save();
+                $deliveryStatus = new DeliveryStatus();
+                $deliveryStatus->status = $status;
+                $deliveryStatus->details = json_encode($item);
+                $deliveryStatus->driverId = $driver->id;
+                $deliveryStatus->deliveryId = $delivery->id;
+                $deliveryStatus->save();
 
                 if (in_array($status, ['Bounce', 'Bounced', 'Dropped'])) {
                     //If the mail service fails to deliver the mail, then we try another mail API if exists.
@@ -53,12 +53,12 @@ Route::prefix('webhook')->group(function () {
             $delivery = Delivery::whereMessageId($messageId)->first();
 
             if ($delivery) {
-                $delivery_status = new DeliveryStatus();
-                $delivery_status->status = $status;
-                $delivery_status->details = json_encode($item);
-                $delivery_status->driverId = $driver->id;
-                $delivery_status->deliveryId = $delivery->id;
-                $delivery_status->save();
+                $deliveryStatus = new DeliveryStatus();
+                $deliveryStatus->status = $status;
+                $deliveryStatus->details = json_encode($item);
+                $deliveryStatus->driverId = $driver->id;
+                $deliveryStatus->deliveryId = $delivery->id;
+                $deliveryStatus->save();
 
                 if (in_array($status, ['Bounce', 'Blocked'])) {
                     //If the mail service fails to deliver the mail, then we try another mail API if exists.

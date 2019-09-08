@@ -5,6 +5,7 @@ namespace App\Jobs;
 use App\Delivery;
 use App\DeliveryStatus;
 use App\Driver;
+use App\Events\WebsocketDeliveryStatusChangeEvent;
 use App\MailConnector\Facades\MailConnector;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
@@ -49,12 +50,14 @@ class ProcessSendMail implements ShouldQueue
             $response = $driver->send($this->delivery);
             Log::info(json_encode($response));
 
-            $delivery_status = new DeliveryStatus();
-            $delivery_status->status = $response['status'];
-            $delivery_status->details = json_encode($response);
-            $delivery_status->driverId = $d->id;
-            $delivery_status->deliveryId = $this->delivery->id;
-            $delivery_status->save();
+            $deliveryStatus = new DeliveryStatus();
+            $deliveryStatus->status = $response['status'];
+            $deliveryStatus->details = json_encode($response);
+            $deliveryStatus->driverId = $d->id;
+            $deliveryStatus->deliveryId = $this->delivery->id;
+            $deliveryStatus->save();
+
+            broadcast(new WebsocketDeliveryStatusChangeEvent($deliveryStatus));
 
             if ($response['status'] == 'Sent') {
                 $this->delivery->message_id = $response['message_id'];
