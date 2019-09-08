@@ -1,10 +1,5 @@
 <?php
 
-use App\Delivery;
-use App\DeliveryStatus;
-use App\Driver;
-use GuzzleHttp\Client;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,6 +12,5 @@ use GuzzleHttp\Client;
 */
 
 Route::get('/', function () {
-
     return view('welcome');
 });

@@ -13,14 +13,6 @@ class DatabaseSeeder extends Seeder
     {
         $this->call('DriverTableSeeder');
         $this->command->info('Drivers table seeded!');
-        /*$this->call('EmailAddressTableSeeder');
-        $this->command->info('EmailAddresses table seeded!');
-        $this->call('MailTableSeeder');
-        $this->command->info('Mails table seeded!');
-        $this->call('AttachmentTableSeeder');
-        $this->command->info('Attachments table seeded!');
-        $this->call('DeliveryTableSeeder');
-        $this->command->info('Deliveries table seeded!');*/
     }
 }
 
@@ -30,8 +22,8 @@ class DriverTableSeeder extends Seeder
     {
         \Illuminate\Support\Facades\DB::table('drivers')->delete();
         \Illuminate\Support\Facades\DB::table('drivers')->insert([
-            ['id' => '1', 'name' => 'SendGrid', 'path' => "\App\MailDrivers\SendGrid\Driver", 'priority' => "1"],
-            ['id' => '2', 'name' => 'Mailjet', 'path' => "\App\MailDrivers\Mailjet\Driver", 'priority' => "2"],
+            ['id' => '1', 'name' => 'sendgrid', 'priority' => "1"],
+            ['id' => '2', 'name' => 'mailjet', 'priority' => "2"],
         ]);
     }
 }

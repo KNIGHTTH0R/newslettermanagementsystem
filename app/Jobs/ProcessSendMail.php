@@ -5,6 +5,7 @@ namespace App\Jobs;
 use App\Delivery;
 use App\DeliveryStatus;
 use App\Driver;
+use App\MailConnector\Facades\MailConnector;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -44,8 +45,7 @@ class ProcessSendMail implements ShouldQueue
             if ($this->delivery->statuses()->where('driver_id', '=', $d->id)->exists())
                 continue;
 
-            $driver_path = $d->path;
-            $driver = new $driver_path();
+            $driver = MailConnector::driver($d->name);
             $response = $driver->send($this->delivery);
             Log::info(json_encode($response));
 

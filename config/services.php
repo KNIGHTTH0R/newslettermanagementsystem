@@ -44,4 +44,16 @@ return [
         ],
     ],
 
+    'sendgrid' => [
+        'pubkey' => null,
+        'prikey' => env('SENDGRID_API_KEY'),
+        'endpoint' => env('SENDGRID_ENDPOINT', 'https://api.sendgrid.com/v3/mail/send'),
+    ],
+
+    'mailjet' => [
+        'pubkey' => env('MAILJET_APIKEY_PUBLIC', null),
+        'prikey' => env('MAILJET_APIKEY_PRIVATE'),
+        'endpoint' => env('MAILJET_ENDPOINT', 'https://api.mailjet.com/v3.1/send'),
+    ],
+
 ];

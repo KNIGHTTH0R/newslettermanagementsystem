@@ -12,15 +12,60 @@
 |
 */
 
+use App\Delivery;
+use App\DeliveryStatus;
+
 Route::prefix('webhook')->group(function () {
     Route::post('sendgrid', function () {
         $payload = json_decode(request()->getContent(), true);
-        \App\MailDrivers\SendGrid\Webhook::handle($payload);
+        $driver = \App\Driver::whereName("SendGrid")->first();
+        foreach ($payload as $item) {
+            $messageId = explode('.', $item['sg_message_id'])[0];
+            $status = ucfirst($item['event']);
+
+            $delivery = Delivery::whereMessageId($messageId)->first();
+
+            if ($delivery) {
+                $delivery_status = new DeliveryStatus();
+                $delivery_status->status = $status;
+                $delivery_status->details = json_encode($item);
+                $delivery_status->driverId = $driver->id;
+                $delivery_status->deliveryId = $delivery->id;
+                $delivery_status->save();
+
+                if (in_array($status, ['Bounce', 'Bounced', 'Dropped'])) {
+                    //If the mail service fails to deliver the mail, then we try another mail API if exists.
+                    \App\Jobs\ProcessSendMail::dispatch($delivery);
+                }
+            }
+        }
     });
 
     Route::post('mailjet', function () {
         $payload = json_decode(request()->getContent(), true);
-        \App\MailDrivers\Mailjet\Webhook::handle($payload);
+        $driver = \App\Driver::whereName("Mailjet")->first();
+        foreach ($payload as $item) {
+            $messageId = substr($item['MessageID'], 0, 14);
+            $status = ucfirst($item['event']);
+            if ($status == 'Sent')
+                $status = 'Delivered';
+
+            $delivery = Delivery::whereMessageId($messageId)->first();
+
+            if ($delivery) {
+                $delivery_status = new DeliveryStatus();
+                $delivery_status->status = $status;
+                $delivery_status->details = json_encode($item);
+                $delivery_status->driverId = $driver->id;
+                $delivery_status->deliveryId = $delivery->id;
+                $delivery_status->save();
+
+                if (in_array($status, ['Bounce', 'Blocked'])) {
+                    //If the mail service fails to deliver the mail, then we try another mail API if exists.
+                    \App\Jobs\ProcessSendMail::dispatch($delivery);
+                }
+            }
+        }
     });
 });
 
