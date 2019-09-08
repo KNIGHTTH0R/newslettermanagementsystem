@@ -153,7 +153,6 @@
             // here we listen websocket for delivery status changes
             Echo.channel('DeliveryChannel')
                 .listen('WebsocketDeliveryStatusChangeEvent', (e) => {
-                    console.log(e);
                     $.each(this.deliveries, function(key, value) {
                         if(value.id == e.newDeliveryStatus.delivery_id) {
                             value.status = e.newDeliveryStatus.status;
